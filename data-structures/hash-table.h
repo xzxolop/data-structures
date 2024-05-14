@@ -4,11 +4,11 @@
 #include <iostream>
 
 template<typename Key>
-size_t myHash(Key key) {
-	auto ban = &reinterpret_cast<const unsigned char&>(key);
+size_t stdHash(Key key) {
+	auto bytes = &reinterpret_cast<const unsigned char&>(key);
 	size_t hash = 0;
 	for (int i = 0; i < sizeof(key); i++) {
-		hash ^= static_cast<size_t>(ban[i]);
+		hash ^= static_cast<size_t>(bytes[i]);
 		hash *= i + 1;
 	}
 
@@ -16,11 +16,11 @@ size_t myHash(Key key) {
 }
 
 template<typename Key>
-size_t myHash2(Key key) {
-	auto ban = &reinterpret_cast<const unsigned char&>(key);
+size_t alikHash(Key key) {
+	auto bytes = &reinterpret_cast<const unsigned char&>(key);
 	size_t hash = 0;
 	for (int i = 0; i < sizeof(key); i++) {
-		hash = (hash << 8) + static_cast<size_t>(ban[i]);
+		hash = (hash << 8) + static_cast<size_t>(bytes[i]);
 	}
 
 	return hash;
@@ -40,19 +40,32 @@ public:
 
 	HashTable() {
 		_size = 7;
+		buckets = new std::vector<Value>(_size);
+	}
+
+	void insert(Key k , Value v) {
+		size_t ind = get_index(k);
+		(*buckets)[ind] = v;
 	}
 
 	Fun hash_function() const {
 		return Hash;
 	}
 
-	void insert(const value_type& v) {
-		std::cout << get_index(v.first) << std::endl;
+	void print() const {
+		for (int i = 0; i < buckets->size(); i++) {
+			std::cout << i << ": " << (*buckets)[i] << std::endl;
+		}
+	}
+
+	Value& operator[](Key key) {
+		size_t ind = get_index(key);
+		return (*buckets)[ind];
 	}
 
 private:
 	int _size = 0;
-	std::vector<value_type> buckets;
+	std::vector<Value>* buckets;
 	int get_index(Key key) const {
 		return Hash(key) % _size;
 	}
