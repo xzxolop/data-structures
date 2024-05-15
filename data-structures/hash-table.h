@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <vector>
 #include <iostream>
@@ -26,7 +26,6 @@ size_t alikHash(Key key) {
 	return hash;
 }
 
-
 // Analog of unordered_map
 template<typename Key, typename Value, size_t (*Hash)(Key)>
 class HashTable {
@@ -43,9 +42,22 @@ public:
 		buckets = new std::vector<Value>(_size);
 	}
 
-	void insert(Key k , Value v) {
+	void insert(const Key k, const Value& v) { // почему value не следует делать const?
+		insert(std::move(Value(v)));
+	}
+
+	void insert(const Key k, Value&& v) {
 		size_t ind = get_index(k);
 		(*buckets)[ind] = v;
+	}
+
+	void insert(const value_type& pair) {
+		insert(std::move(value_type(pair)));
+	}
+
+	void insert(value_type&& pair) {
+		size_t ind = get_index(pair.first);
+		(*buckets)[ind] = pair.second;
 	}
 
 	Fun hash_function() const {
