@@ -39,7 +39,7 @@ public:
 
 	HashTable() {
 		_size = 7;
-		buckets = new std::vector<Value>(_size);
+		buckets = std::vector<Value>(_size);
 	}
 
 	void insert(const Key k, const Value& v) { // почему value не следует делать const?
@@ -48,7 +48,7 @@ public:
 
 	void insert(const Key k, Value&& v) {
 		size_t ind = get_index(k);
-		(*buckets)[ind] = v;
+		buckets[ind] = v;
 	}
 
 	void insert(const value_type& pair) {
@@ -57,7 +57,7 @@ public:
 
 	void insert(value_type&& pair) {
 		size_t ind = get_index(pair.first);
-		(*buckets)[ind] = pair.second;
+		buckets[ind] = pair.second;
 	}
 
 	Fun hash_function() const {
@@ -65,19 +65,19 @@ public:
 	}
 
 	void print() const {
-		for (int i = 0; i < buckets->size(); i++) {
-			std::cout << i << ": " << (*buckets)[i] << std::endl;
+		for (int i = 0; i < buckets.size(); i++) {
+			std::cout << i << ": " << buckets[i] << std::endl;
 		}
 	}
 
 	Value& operator[](Key key) {
 		size_t ind = get_index(key);
-		return (*buckets)[ind];
+		return buckets[ind];
 	}
 
 private:
 	int _size = 0;
-	std::vector<Value>* buckets;
+	std::vector<Value> buckets;
 	int get_index(Key key) const {
 		return Hash(key) % _size;
 	}
