@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <string>
+#include <array>
 #include <vector>
 #include <list>
 #include <iostream>
@@ -17,15 +18,26 @@ size_t stdHash(Key key) {
 }
 
 template<typename Key>
+size_t myHash(Key key) {
+	auto bytes = &reinterpret_cast<const unsigned char&>(key);
+	size_t hash = 0;
+	for (int i = 0; i < sizeof(key); i++) {
+		hash += static_cast<size_t>(bytes[i]);
+	}
+	return hash;
+}
+
+template<typename Key>
 size_t alikHash(Key key) {
 	auto bytes = &reinterpret_cast<const unsigned char&>(key);
 	size_t hash = 0;
 	for (int i = 0; i < sizeof(key); i++) {
-		hash = (hash << 8) + static_cast<size_t>(bytes[i]);
+		hash = (hash << 5) + static_cast<size_t>(bytes[i]);
 	}
 
 	return hash;
 }
+
 
 // Analog of unordered_map
 template<typename Key, typename Value, size_t(*Hash)(Key)>
@@ -37,18 +49,21 @@ public:
 	using list = std::list<value_type>;
 	using Fun = size_t(*)(Key);
 
-	HashTable() {
-		_size = 7;
-		buckets = std::vector<list>(_size);
-	}
+	HashTable() : _size(0), buckets(std::vector<list>(7)) {}; // использовать список инициализации, для большей эффективности
 
 	void insert(const Key k, const Value& v) { // почему value не следует делать const?
-		insert(k, std::move(value(v)));
+		insert(k, std::move(Value(v)));
 	}
 
 	void insert(const Key k, Value&& v) {
-		size_t ind = get_index(k);
-		buckets[ind].push_back(value_type(k,v));
+		if (buckets.size() < _size) {
+			_resize();
+		}
+		else {
+			size_t ind = get_index(k);
+			buckets[ind].push_back(value_type(k, v));
+			_size++;
+		}
 	}
 
 	void insert(const value_type& pair) {
@@ -56,8 +71,14 @@ public:
 	}
 
 	void insert(value_type&& pair) {
-		size_t ind = get_index(pair.first);
-		buckets[ind].push_back(pair);
+		if (buckets.size() < _size) {
+			_resize();
+		}
+		else {
+			size_t ind = get_index(pair.first);
+			buckets[ind].push_back(pair);
+			_size++;
+		}
 	}
 
 	void remove(Key key) {
@@ -175,7 +196,22 @@ private:
 	std::vector<list> buckets; // стоит ли использовать это как указатель на вектор? как на счёт конструктора копии?
 
 	int get_index(Key key) const {
-		return Hash(key) % _size;
+		return Hash(key) % buckets.size();
+	}
+
+	std::vector<int> sizes{5, 11, 23, 47, 97, 193, 389, 769, 1543, 3072, 3079, 12289, 24593,
+		49157, 98317, 196613, 393241, 786433, 1572869, 3145739, 6291469, 12582917, 25165843,
+		50331653, 100663319, 201326611, 402653189, 805306457, 1610612736, 2147483629};
+
+	void _resize() {
+		int new_size = buckets.size();
+		for (int i = 1; i < sizes.size(); i++ ) {
+			if (new_size < sizes[i]) {
+				new_size = sizes[i];
+				buckets.resize(new_size);
+				return;
+			}
+		}
 	}
 };
 

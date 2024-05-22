@@ -1,25 +1,27 @@
-﻿#include "hash-table.h"
-#include <unordered_map>
-#include <list>
+﻿#include <unordered_map>
+#include <ctime>
+
+#include "hash-table.h"
 
 int main() {
-	HashTable<int, std::string, stdHash> ht;
-	ht.insert(1, "ban");
-	ht.insert(2, "egor");
-	ht.insert(360, "niger");
-	ht.insert(360, "ni34ger");
-	ht.insert(360, "ni34ger");
-	ht.print();
+	std::srand(std::time(0));
 
-	std::cout << ht.operator[](2) << std::endl;
-	
-	ht[1] = "22";
-	ht.remove_last(360);
-
-	ht.hash_print();
+	HashTable<int, std::string, stdHash> ht1;
+	HashTable<int, std::string, myHash> ht2;
+	HashTable<int, std::string, alikHash> ht3;
 
 
-	std::unordered_map<int, std::string> htstd;
+	int a = 2000;
+	while (a) {
+		ht1.insert(std::rand()%10, "a");
+		ht2.insert(std::rand() % 10, "b");
+		ht3.insert(std::rand() % 10, "c");
+		a--;
+	}
+	ht1.hash_print();
+	ht2.hash_print();
+	ht3.hash_print();
+	std::cout << std::endl;
 
 
 	return 0;
