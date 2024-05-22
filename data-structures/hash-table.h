@@ -34,7 +34,7 @@ public:
 	using value_type = std::pair<Key, Value>;
 	using reference = value_type&;
 	using pointer = value_type*;
-	using list = std::list<Value>;
+	using list = std::list<value_type>;
 	using Fun = size_t(*)(Key);
 
 	HashTable() {
@@ -43,12 +43,12 @@ public:
 	}
 
 	void insert(const Key k, const Value& v) { // почему value не следует делать const?
-		insert(std::move(value(v)));
+		insert(k, std::move(value(v)));
 	}
 
 	void insert(const Key k, Value&& v) {
 		size_t ind = get_index(k);
-		buckets[ind].push_back(v);
+		buckets[ind].push_back(value_type(k,v));
 	}
 
 	void insert(const value_type& pair) {
@@ -69,16 +69,36 @@ public:
 			if (buckets[i].size() > 0) {
 				std::cout << i << ": ";
 				for (auto x : buckets[i]) {
-					std::cout << x << ' ';
+					std::cout << x.second << ' ';
 				}
 				std::cout << std::endl;
 			}
 		}
 	}
 
-	auto operator[](Key key) {
+	void hash_print() const {
+		for (size_t i = 0; i < buckets.size(); i++) {
+			if (buckets[i].size() > 0) {
+				std::cout << i << ": " << Hash((buckets[i].begin())->first) << ": ";
+				for (auto x : buckets[i]) {
+					std::cout << x.second << ' ';
+				}
+				std::cout << std::endl;
+			}
+		}
+	}
+
+	Value& operator[](Key key) {
 		size_t ind = get_index(key);
-		return buckets[ind].begin();
+		
+		for (auto& x : buckets[ind]) { // auto с ссылкой? без ссылки не работает.
+			if (x.first == key) {
+				return x.second;
+			}
+			else {
+				throw 0;
+			}
+		}
 	}
 
 private:
