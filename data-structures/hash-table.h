@@ -35,13 +35,11 @@ public:
 	using reference = value_type&;
 	using pointer = value_type*;
 	using list = std::list<Value>;
-
-	//typedef size_t (*Fun)(Key);
 	using Fun = size_t(*)(Key);
 
 	HashTable() {
 		_size = 7;
-		buckets = std::vector<list*>(_size);
+		buckets = std::vector<list>(_size);
 	}
 
 	void insert(const Key k, const Value& v) { // почему value не следует делать const?
@@ -50,10 +48,7 @@ public:
 
 	void insert(const Key k, Value&& v) {
 		size_t ind = get_index(k);
-		if (buckets[ind] == nullptr) {
-			buckets[ind] = new list();
-		}
-		(*buckets[ind]).push_back(v);
+		buckets[ind].push_back(v);
 	}
 
 	void insert(const value_type& pair) {
@@ -62,10 +57,7 @@ public:
 
 	void insert(value_type&& pair) {
 		size_t ind = get_index(pair.first);
-		if (buckets[ind] == nullptr) {
-			buckets[ind] = new list();
-		}
-		(*buckets[ind]).push_back(pair.second);
+		buckets[ind].push_back(pair.second);
 	}
 
 	Fun hash_function() const {
@@ -73,10 +65,10 @@ public:
 	}
 
 	void print() const {
-		for (int i = 0; i < buckets.size(); i++) {
-			if (buckets[i] != nullptr) {
+		for (size_t i = 0; i < buckets.size(); i++) {
+			if (buckets[i].size() > 0) {
 				std::cout << i << ": ";
-				for (auto x : *(buckets[i])) {
+				for (auto x : buckets[i]) {
 					std::cout << x << ' ';
 				}
 				std::cout << std::endl;
@@ -86,12 +78,12 @@ public:
 
 	auto operator[](Key key) {
 		size_t ind = get_index(key);
-		return buckets[ind]->begin();
+		return buckets[ind].begin();
 	}
 
 private:
 	int _size = 0;
-	std::vector<list*> buckets; // стоит ли использовать это как указатель на вектор? как на счёт конструктора копии?
+	std::vector<list> buckets; // стоит ли использовать это как указатель на вектор? как на счёт конструктора копии?
 
 	int get_index(Key key) const {
 		return Hash(key) % _size;
