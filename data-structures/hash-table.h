@@ -57,7 +57,76 @@ public:
 
 	void insert(value_type&& pair) {
 		size_t ind = get_index(pair.first);
-		buckets[ind].push_back(pair.second);
+		buckets[ind].push_back(pair);
+	}
+
+	void remove(Key key) {
+		size_t ind = get_index(key);
+		list* l = &buckets[ind];
+
+		for (auto it = l->begin(); it != l->end(); ) {
+			if (it->first == key) {
+				it = l->erase(it);
+			}
+			else {
+				it++; // если убрать else будет ошибка?
+			}
+		}
+
+		/*for (auto it = l->begin(); it != l->end(); ++it ) { 
+			if (it->first == key) {
+				it = l->erase(it);
+			}
+		}*/
+	}
+
+	void remove_first(Key key) {
+		size_t ind = get_index(key);
+		list* l = &buckets[ind];
+
+		for (auto it = l->begin(); it != l->end(); ) {
+			if (it->first == key) {
+				it = l->erase(it);
+				return;
+			}
+			else {
+				it++;
+			}
+		}
+	}
+
+	void remove_last(Key key) {
+		size_t ind = get_index(key);
+		list* l = &buckets[ind];
+
+		for (auto it = l->end(); it != l->begin(); ) {
+			--it;
+			if (it->first == key) {
+				it = l->erase(it);
+				return;
+			}
+			else {
+				--it;
+			}
+		}
+	}
+
+	void remove(Key key, size_t position) {
+		size_t ind = get_index(key);
+		list* l = &buckets[ind];
+
+		for (auto it = l->end(); it != l->begin(); position >= 0) {
+			if (it->first == key) {
+				position--;
+				if (position == 0) {
+					it = l->erase(it);
+					return;
+				}
+			}
+			else {
+				--it;
+			}
+		}
 	}
 
 	Fun hash_function() const {
