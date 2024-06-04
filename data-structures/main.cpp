@@ -3,8 +3,27 @@
 #include <chrono>
 
 #include "hash-table.h"
+#include "binary-tree.h"
+
+void binary_tree();
+void hash_table();
 
 int main() {
+	binary_tree();
+
+	return 0;
+}
+
+void binary_tree() {
+	BinaryTree<int> btr;
+	btr.insert(10);
+	btr.insert(20);
+	btr.insert(6);
+	btr.insert(1);
+	btr.print();
+}
+
+void hash_table() {
 	std::srand(std::time(0));
 
 	HashTable<int, std::string, stdHash> ht1;
@@ -32,9 +51,9 @@ int main() {
 	std::cout << std::endl;
 	std::cout << "Battle with std" << std::endl;
 	std::unordered_multimap<int, std::string> htstd;
-	
+
 	int contSize = 5000000;
-	
+
 	using namespace std::chrono;
 	std::cout << "Insertion" << std::endl;
 	{
@@ -101,6 +120,4 @@ int main() {
 
 		std::cout << "my-table myhash millisec: " << duration.count() << std::endl;
 	}
-
-	return 0;
 }

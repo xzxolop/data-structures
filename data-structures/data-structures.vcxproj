@@ -131,6 +131,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="binary-tree.h" />
     <ClInclude Include="hash-table.h" />
     <ClInclude Include="list.h" />
   </ItemGroup>
