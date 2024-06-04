@@ -1,1 +1,5 @@
 .vs
+data-structures/x64/
+**Debug**
+*.pdb
+
