@@ -21,6 +21,9 @@ void binary_tree() {
 	btr.insert(6);
 	btr.insert(1);
 	btr.print();
+
+	std::cout << "left: " << btr.left() << " right: " << btr.right() << std::endl;
+	std::cout << "size: " << btr.size() << std::endl;
 }
 
 void hash_table() {
