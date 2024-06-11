@@ -26,7 +26,10 @@
     <ClInclude Include="hash-table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="binary-tree.h">
+    <ClInclude Include="list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

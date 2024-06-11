@@ -4,14 +4,41 @@
 
 #include "hash-table.h"
 #include "binary-tree.h"
+#include "sort.h"
 
 void binary_tree();
 void hash_table();
+void bubble_sort_test();
 
 int main() {
-	binary_tree();
+	//binary_tree();
+
+	bubble_sort_test();
 
 	return 0;
+}
+
+void bubble_sort_test() {
+
+	std::vector<int> v{9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 6};
+	for (auto x : v) {
+		std::cout << x << ' ';
+	}
+	std::cout << std::endl;
+
+	bubble_sort1(v);
+	for (auto x : v) {
+		std::cout << x << ' ';
+	}
+	std::cout << std::endl;
+
+	v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 6 };
+	bubble_sort2(v.begin(), v.end());
+	for (auto x : v) {
+		std::cout << x << ' ';
+	}
+	std::cout << std::endl;
+
 }
 
 void binary_tree() {
