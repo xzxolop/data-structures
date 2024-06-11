@@ -1,10 +1,12 @@
 ﻿#include <unordered_map>
 #include <ctime>
 #include <chrono>
+#include <thread>
 
 #include "hash-table.h"
 #include "binary-tree.h"
 #include "sort.h"
+#include "functions.h"
 
 void binary_tree();
 void hash_table();
@@ -12,32 +14,27 @@ void bubble_sort_test();
 
 int main() {
 	//binary_tree();
-
+	
 	bubble_sort_test();
 
 	return 0;
 }
 
 void bubble_sort_test() {
+	size_t size = 30000;
+	std::vector<int> v;
+	v = create_cont(v, size);
+	time_test(static_cast<void(*)(std::vector<int>&)>(bubble_sort), std::ref(v));
 
-	std::vector<int> v{9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 6};
-	for (auto x : v) {
-		std::cout << x << ' ';
-	}
-	std::cout << std::endl;
+	v = create_cont(v, size);
+	time_test(bubble_sort_alik<std::vector<int>>, v);
 
-	bubble_sort1(v);
-	for (auto x : v) {
-		std::cout << x << ' ';
-	}
-	std::cout << std::endl;
+	v = create_cont(v, size);
+	time_test(static_cast<void(*)(std::vector<int>::iterator, std::vector<int>::iterator)>(bubble_sort), v.begin(), v.end());
 
 	v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 6 };
-	bubble_sort2(v.begin(), v.end());
-	for (auto x : v) {
-		std::cout << x << ' ';
-	}
-	std::cout << std::endl;
+	bubble_sort_alik(v);
+	print(v);
 
 }
 

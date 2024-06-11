@@ -131,6 +131,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="functions.h" />
     <ClInclude Include="hash-table.h" />
     <ClInclude Include="sort.h" />
     <ClInclude Include="list.h" />
