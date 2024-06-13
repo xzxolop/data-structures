@@ -3,8 +3,37 @@
 #include <chrono>
 
 #include "hash-table.h"
+#include "functions.h"
+#include "sort.h"
+void bubble_sort_test();
+void hash_table_test();
 
 int main() {
+	
+	bubble_sort_test();
+
+	return 0;
+}
+
+void bubble_sort_test() {
+	size_t size = 30000;
+	std::vector<int> v;
+	v = create_cont(v, size);
+	time_test(static_cast<void(*)(std::vector<int>&)>(bubble_sort), std::ref(v));
+
+	v = create_cont(v, size);
+	time_test(bubble_sort_alik<std::vector<int>>, v);
+
+	v = create_cont(v, size);
+	time_test(static_cast<void(*)(std::vector<int>::iterator, std::vector<int>::iterator)>(bubble_sort), v.begin(), v.end());
+
+	v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 6 };
+	bubble_sort_alik(v);
+	print(v);
+
+}
+
+void hash_table_test() {
 	std::srand(std::time(0));
 
 	HashTable<int, std::string, stdHash> ht1;
@@ -32,9 +61,9 @@ int main() {
 	std::cout << std::endl;
 	std::cout << "Battle with std" << std::endl;
 	std::unordered_multimap<int, std::string> htstd;
-	
+
 	int contSize = 5000000;
-	
+
 	using namespace std::chrono;
 	std::cout << "Insertion" << std::endl;
 	{
@@ -101,6 +130,4 @@ int main() {
 
 		std::cout << "my-table myhash millisec: " << duration.count() << std::endl;
 	}
-
-	return 0;
 }
