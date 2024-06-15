@@ -5,6 +5,7 @@
 #include "hash-table.h"
 #include "functions.h"
 #include "sort.h"
+#include "elem.h"
 void bubble_sort_test();
 void hash_table_test();
 
@@ -16,12 +17,17 @@ int main() {
 }
 
 void bubble_sort_test() {
-	size_t size = 30000;
-	std::vector<int> v;
-	v = create_cont(v, size);
-	time_test(static_cast<void(*)(std::vector<int>&)>(bubble_sort), std::ref(v));
+	size_t size = 30;
+	using Item = Elem;
+	std::vector<Item> v;
+	v = create_cont<std::vector<Item>, Item>(v, size);
+	time_test(static_cast<void(*)(std::vector<Item>&)>(bubble_sort), std::ref(v));
+	Elem::print();
+	//print(v);
+	bubble_sort(v);
+	print(v);
 
-	v = create_cont(v, size);
+	/*v = create_cont(v, size);
 	time_test(bubble_sort_alik<std::vector<int>>, v);
 
 	v = create_cont(v, size);
@@ -29,7 +35,7 @@ void bubble_sort_test() {
 
 	v = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 6, 6 };
 	bubble_sort_alik(v);
-	print(v);
+	print(v);*/
 
 }
 
