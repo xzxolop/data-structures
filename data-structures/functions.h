@@ -10,11 +10,11 @@ inline void print(const cont& c) {
 	std::cout << std::endl;
 }
 
-template<typename cont, typename T>
+template<typename cont>
 inline cont& create_cont(cont& c, size_t size) {
 	c.clear();
 	while (size > 0) {
-		c.push_back((T)size);
+		c.push_back(static_cast<cont::value_type>(size));
 		size--;
 	}
 	return c;

@@ -1,6 +1,19 @@
 #pragma once
 
 template<typename cont>
+void bubble_sort(cont& c) {
+	size_t cnt = c.size() - 1;
+	while (cnt > 0) {
+		for (size_t i = 0; i < cnt; i++) {
+			if (c[i] > c[i + 1]) {
+				std::swap(c[i], c[i + 1]);
+			}
+		}
+		cnt--;
+	}
+}
+
+template<typename cont>
 void bubble_sort_alik(cont& c) {
 	size_t len = c.size();
 	while (len != 0) {
@@ -14,20 +27,6 @@ void bubble_sort_alik(cont& c) {
 		len = max_ind;
 	}
 }
-
-template<typename cont>
-void bubble_sort(cont& c) {
-	size_t cnt = c.size() - 1;
-	while (cnt > 0) {
-		for (size_t i = 0; i < cnt; i++) {
-			if (c[i] > c[i + 1]) {
-				std::swap(c[i], c[i + 1]);
-			}
-		}
-		cnt--;
-	}
-}
-
 
 template<typename iter>
 void bubble_sort(iter beg, iter end) {
