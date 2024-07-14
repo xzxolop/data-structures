@@ -19,12 +19,14 @@ void binary_tree() {
 
 	std::cout << btr.right() << " " << btr.left() << std::endl;
 
-	btr.insert(10);
+	btr.insert(9);
 	btr.insert(20);
 	btr.insert(6);
 	btr.insert(1);
+	btr.insert(0);
 	btr.print_lnr();
 	btr.print_lnr(" ban ");
+	btr.print_rnl();
 
 	std::cout << "left: " << btr.left() << " right: " << btr.right() << std::endl;
 	std::cout << "size: " << btr.size() << std::endl;

@@ -44,6 +44,33 @@ public:
 		std::cout << std::endl;
 	}
 
+	void print_rnl(const std::string& devider = " ") const {
+		if (dummy->parent == nullptr) return;
+		std::vector<Node*> stack;
+		Node* current = dummy->parent; 
+		stack.push_back(current);
+		while (stack.size() > 0 && current != nullptr) {
+			while (current != dummy && current != nullptr)
+			{
+				stack.push_back(current);
+				current = current->left;
+			}
+			if (stack.size() > 0) {
+				current = stack[stack.size() - 1];
+				stack.pop_back();
+				std::cout << current->data << devider;
+				current = current->right;
+			}
+			std::cout << stack.size();
+		}
+		std::cout << std::endl;
+
+		/*for (auto i = stack.end() - 1; i > stack.begin(); i--) {
+			std::cout << *i << devider;
+		}
+		std::cout << std::endl;*/
+	} 
+
 private:
 	struct Node {
 	public:
