@@ -24,23 +24,23 @@ public:
 		_size++;
 	}
 	
-	size_t size() const {
+	size_t size() const noexcept {
 		return _size;
 	}
 
-	T left() {
+	T left() const noexcept {
 		return (dummy->left->data);
 	}
 
-	T right() {
+	T right() const noexcept {
 		return (dummy->right->data);
 	}
 
-	void print() {
+	void print_lnr(const std::string& devider = " ") const {
 		if (dummy->parent == nullptr) {
 			return;
 		}
-		print_h(dummy->parent);
+		print_lnr(dummy->parent, devider);
 		std::cout << std::endl;
 	}
 
@@ -60,41 +60,41 @@ private:
 	size_t _size;
 
 	void insert_h(Node* node, T&& value) {
-		if (cmp(value, node->data)) {
+		if (cmp(value, node->data)) { // if insert elem < root
 			if (node->left == nullptr) {
 				node->left = create_node(value, node);
-				if (dummy->left == node) {
+				if (dummy->left == node) { // if value - most left elem, then pointer on most left elem changed
 					dummy->left = node->left;
 					node->left = node->right = dummy->left;
 				}
 			}
-			else {
-				insert_h(node->left, std::move(value));
+			else { // if not find place for insert
+				insert_h(node->left, std::move(value)); 
 			}
 		}
-		else {
+		else { // if insert elem > root
 			if (node->right == nullptr) {
 				node->right = create_node(std::move(value), node);
-				if (dummy->right == node) {
+				if (dummy->right == node) { // if value - most right elem, then pointer on most right elem changed
 					dummy->right = node->right;
 					node->left = node->right = dummy->right;
 				}
 			}
-			else {
+			else { // if not find place for insert
 				insert_h(node->right, std::move(value));
 			}
 		}
 	}
 
-	void print_h(Node* node) {
+	void print_lnr(Node* node, const std::string& devider = " ") const {
 		
 		if (node->left != nullptr) {
-			print_h(node->left);
+			print_lnr(node->left, devider);
 		}
-		if (node->right != nullptr) {
-			print_h(node->right);
+		else if (node->right != nullptr) {
+			print_lnr(node->right, devider);
 		}
-		std::cout << node->data << ' ';
+		std::cout << node->data << devider;
 	}
 
 	Node* create_dummy() {

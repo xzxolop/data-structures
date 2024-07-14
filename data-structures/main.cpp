@@ -16,11 +16,15 @@ int main() {
 
 void binary_tree() {
 	BinaryTree<int> btr;
+
+	std::cout << btr.right() << " " << btr.left() << std::endl;
+
 	btr.insert(10);
 	btr.insert(20);
 	btr.insert(6);
 	btr.insert(1);
-	btr.print();
+	btr.print_lnr();
+	btr.print_lnr(" ban ");
 
 	std::cout << "left: " << btr.left() << " right: " << btr.right() << std::endl;
 	std::cout << "size: " << btr.size() << std::endl;
