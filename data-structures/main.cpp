@@ -8,15 +8,45 @@
 #include "elem.h"
 void bubble_sort_test();
 void hash_table_test();
+void revert_test();
 
 int main() {
 	
-	bubble_sort_test();
+	//bubble_sort_test();
+	revert_test();
 
 	std::vector<int>::value_type;
 	
 
 	return 0;
+}
+
+void revert_test() {
+
+	//using Item = Elem;
+	Elem number(-123456789);
+
+	//time_test(static_cast<void(*)(std::vector<Item>::iterator, std::vector<Item>::iterator)>(bubble_sort), v.begin(), v.end());
+
+	std::cout << "Math:" << number << std::endl;
+	std::cout << revertNumberByDivide(number) << std::endl;
+	Elem::print();
+	Elem::reset();
+
+	std::cout << std::endl;
+
+	std::cout << "String: " << number << std::endl;
+	std::cout << revertNumberByString(number) << std::endl;
+	Elem::print();
+	StringElem::print();
+	Elem::reset();
+	StringElem::reset();
+
+	std::cout << "math time test: " ;
+	time_test_nanosec(revertNumberByDivide<Elem>, number);
+
+	std::cout << "string time test: " ;
+	time_test_nanosec(revertNumberByString, number);
 }
 
 void bubble_sort_test() {
